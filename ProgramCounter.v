@@ -13,6 +13,6 @@ always @(posedge clk or posedge reset) begin
 	else if(jump_enable == 1)
 		pc <= jump_address;
 	else
-		pc <= pc + 120; // increment by 8 or 120 to fetch two instructions at a time
+		pc <= pc + 120; // increment by 120 bits to fetch two instructions at a time
 	end
 endmodule
