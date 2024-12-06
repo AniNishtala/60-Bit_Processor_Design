@@ -2,8 +2,7 @@ module ALU(
 	input clk,
 	input [3:0] op,
 	input [71:0] A, B, 
-	output reg [71:0] C,
-	output reg DivZeroError
+	output reg [71:0] C
 );
 	always@(posedge clk) begin
 	case(op)
