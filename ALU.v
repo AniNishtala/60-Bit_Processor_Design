@@ -22,7 +22,7 @@ module ALU(
 	12: C = (A != B) ? 72'b1: 72'b0; // bne 
 	13: C = (A < B) ? 72'b1: 72'b0; // blt 
 	14: C = (A > B) ? 72'b1: 72'b0; // bgt
-	15: C = B[67:0]; // j
+	15: C = B[67:0]; // j (Dont need this!)
 	default: C = 72'b0; //default case
 	endcase	
 	end
