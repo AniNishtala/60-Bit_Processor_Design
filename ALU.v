@@ -2,7 +2,8 @@ module ALU(
 	input clk,
 	input [3:0] op,
 	input [71:0] A, B, 
-	output reg [71:0] C
+	output reg [71:0] C,
+	output reg DivZeroError
 );
 	always@(posedge clk) begin
 	case(op)
@@ -22,8 +23,14 @@ module ALU(
 	12: C = (A != B) ? 72'b1: 72'b0; // bne 
 	13: C = (A < B) ? 72'b1: 72'b0; // blt 
 	14: C = (A > B) ? 72'b1: 72'b0; // bgt
-	15: C = B[67:0]; // j (Dont need this!)
+	15: if(B != 72'b0) begin // remainder
+		C = A % B;
+		DivZeroError = 0;
+	    end else begin
+		C = 72'b0;
+		DivZeroError = 0;
+		end
 	default: C = 72'b0; //default case
-	endcase	
+	endcase
 	end
 endmodule 
