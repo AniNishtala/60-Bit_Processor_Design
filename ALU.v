@@ -12,24 +12,17 @@ module ALU(
 	2: C = A * B; // mul
 	3: C = A / B; // div
 	4: C = A << B; // LSL by B
-	4: C = A >> B; // LSR by B
-	5: C = A + B[54:0]; // addi
-	6: C = A - B[54:0]; // subi
-	7: C = A & B[54:0]; // andi
-	8: C = A && B; // and logical operation
-	9: C = A || B; // or logical operation
-	10: C = A ^ B; // xor operation
-	11: C = (A == B) ? 72'b1 : 72'b0; // beq
-	12: C = (A != B) ? 72'b1: 72'b0; // bne 
-	13: C = (A < B) ? 72'b1: 72'b0; // blt 
-	14: C = (A > B) ? 72'b1: 72'b0; // bgt
-	15: if(B != 72'b0) begin // remainder
-		C = A % B;
-		DivZeroError = 0;
-	    end else begin
-		C = 72'b0;
-		DivZeroError = 0;
-		end
+	5: C = A >> B; // LSR by B
+	6: C = A + B[54:0]; // addi
+	7: C = A - B[54:0]; // subi
+	8: C = A & B[54:0]; // andi
+	9: C = A && B; // and logical operation
+	10: C = A || B; // or logical operation
+	11: C = A ^ B; // xor operation
+	12: C = (A == B) ? 72'b1 : 72'b0; // beq , makes only right most bit 1 in C if true
+	13: C = (A != B) ? 72'b1: 72'b0; // bne , makes only right most bit 1 in C if true
+	14: C = (A < B) ? 72'b1: 72'b0; // blt , makes only right most bit 1 in C if true
+	15: C = (A > B) ? 72'b1: 72'b0; // bgt, makes only right most bit 1 in C if true
 	default: C = 72'b0; //default case
 	endcase
 	end
