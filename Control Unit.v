@@ -1,48 +1,76 @@
 module control_unit(
-input wire [3:0] opcode // input opcode 
-output reg  ALU_op,  // ALU operation
-output reg branch_en,// Branch instruction 
-output reg  jump_en ,//enables jump
-output reg immediate_en,// ALU source( register or immediate)
-output reg  reg_write // Enables writing to the register file 
-
+input clk, 
+input [59:54] op, // 6 bit opcode 
+output reg branch,
+output reg ALUop,
+output reg Memory_write,
+output reg Memory_read,
+output reg Memory_to_reg,
+output reg ALU_src,
+output reg Register_destination,
+output reg Register_write
+output reg jump
 );
+ 
+always @(posedge clk) begin 
+ // default to keep all the outputs 0 which are not used in the different instructions
 
-always  @(*) begin 
-
-// To start off all the outputs is going to be set by default 0 (Off)
-ALU_op = 0;
-branch_en = 0;
-jump_en = 0;
-immediate_en = 0;
-reg_write = 0
-
-case (opcode) 
-
-/*The opcode is going to receive it and then going to decide which type of intstruction
-just a test op code and we just need to change it when we finalize the opcode
-
-*/
-4'b0001: begin  //R-Type
-alu_op = 1; //perfrom addition
-reg_write = 1; // write to register
-end 
-
-// Skipped the I-Type as no memory was added to diagram 
+    branch <= 0;
+    ALUop <= 0;
+    Memory_write <= 0;
+    Memory_read <= 0;
+    Memory_to_reg <= 0;
+    ALU_src <= 0;
+    Register_destination <=0;
+    Register_write <= 0;
+    jump <= 0;
 
 
-4'b0010 begin // Branch
-alu_op = 1; // Subtraction 
-branch_en1; // Branch 
+  case(op) 
+   
+    // Add Instruction 
+    6'b000001: begin 
+    ALUop <= 1;
+    Register_destination <= 1;
+    Register_write <= 1;
+    end 
 
-end
+      // Sub Instruction 
+    6'b000010: begin 
+    ALUop <= 1;
+    Register_destination <= 1;
+    Register_write <= 1;
+    end 
 
-4'b1111:begin // J-Type
-jump_en = 1;// Enable 
-end 
+  // Load Instruction 
+    6'b000011: begin 
+    Memory_read <= 1;
+    Memory_to_reg <= 1;
+    ALU_src <= 1;
+    Register_write <= 1;
+    end 
+
+  // Store Instruction 
+    6'b000100: begin 
+    Memory_write <= 1;
+    ALU_src <= 1;
+    end 
+
+  //Branch Instruction 
+  6'b000101: begin 
+  branch <=1 ; 
+  end
+
+  // Jump 
+  6'b000110: begin 
+  jump <=1;
+   end 
 endcase 
+
 end 
-endmodule
+endmodule 
+    
+    
 
 
 
