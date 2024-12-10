@@ -1,3 +1,4 @@
+// optional file. Not needed as of 12/10/2024
 module ALU_control ()
 
 input wire [1:0] ALU_op ,// from the control unit 
