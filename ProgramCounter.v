@@ -11,11 +11,11 @@ always @(posedge clk or posedge reset) begin
 
 	if(reset == 1)
 		pc <= 0;
-	else if(jump_enable == 1)
+	else if(Jump_en == 1)
 		pc <= jump_address;
-	else if(branch_en == 1)
+	else if(Branch_en == 1)
 		pc <= branch_address
 	else
-		pc <= pc + 120; // increment by 120 bits to fetch two instructions at a time
+		pc <= pc + 72; // increment by 72 to fetch the next instruction address
 	end
 endmodule
