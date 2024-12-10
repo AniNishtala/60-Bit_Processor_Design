@@ -1,5 +1,5 @@
 /***************NOTEPAD++ TO KEEP TRACK OF WIRE NAMING (LIFE SAVER)*********/
-module 72_Bit_Processor_Top;
+module Seventy_Two_Bit_Processor_Top;
 
 /***************************************************************************/
 /************************Wire Instantiate***********************************/
