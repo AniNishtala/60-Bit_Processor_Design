@@ -1,3 +1,4 @@
+// FILE IS NOW OPTIONAL
 // testing Register.v file
 `timescale 1ps / 1ps
 
