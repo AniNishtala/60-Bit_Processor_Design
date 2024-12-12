@@ -14,7 +14,7 @@ module Seventy_Two_Bit_Processor_Top;
   
   //Wires from Program Counter
   wire [71:0] PC_out;
-  wire And_Gate_result;
+  wire AND_result;
   
   
   
