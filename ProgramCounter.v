@@ -17,7 +17,7 @@ always @ (posedge clk) begin
     else if (Branch)
         PC <= {17'b0, branch_addr};             // Update PC to branch address
     else if (jump)
-        PC <= {5'b0, jump_addr};  //If jump address, update PC to jump address
+        PC <= {4'b0, jump_addr};  //If jump address, update PC to jump address
     else 
         PC <= Addr + 1'b1;    // Else increment to the next instruction, might need to pause this when simulating the final result!
 end
