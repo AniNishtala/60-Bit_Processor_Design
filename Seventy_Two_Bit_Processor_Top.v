@@ -1,11 +1,13 @@
 /***************NOTEPAD++ TO KEEP TRACK OF WIRE NAMING (LIFE SAVER)*********/
-module Seventy_Two_Bit_Processor_Top;
+module Seventy_Two_Bit_Processor_Top(
+
+input wire clk, rst
+);
 
 /***************************************************************************/
 /************************Wire Instantiate***********************************/
 /***************************************************************************/
-  //Global Wires
-  wire clk, rst;
+
   //Wires from Control Unit
   wire Branch_en, Jump_en, immediate_en, write_en, write_datamem;
   
@@ -28,16 +30,17 @@ module Seventy_Two_Bit_Processor_Top;
 /**************************************************************************************/
 
   
-    ProgramCounter PC(
-      .clk(clk),
-      .rst(reset),
-	  .Branch(AND_result), //AND_Result is the Branch_end ANDed with teh ALU output bit postion 0
-	  .jump(Jump_en),
-      .Addr(PC_out),
-      .jump_address(Instruction_Fetch[67:0]),    //jump_address will grab respective immediate address for jump[54:0] of instruction fetch 
-      .branch_address(Instruction_Fetch[54:0]),  //branch_address will grab respective immediate address for branch[67:0] of instruction fetch
-      .PC(PC_out)
-	);
+ProgramCounter PC(
+    .clk(clk),
+    .rst(rst),                        // Corrected to match the port name 'rst'
+    .Branch(AND_result),              // Correct 'Branch' signal connected to the AND gate output
+    .jump(Jump_en),                   // 'jump' signal connected to Jump_en
+    .Addr(PC_out),                    // Target address (PC output)
+    .jump_addr(Instruction_Fetch[67:0]),  // Jump address from instruction fetch (Instruction_Fetch[67:0])
+    .branch_addr(Instruction_Fetch[54:0]), // Branch address from instruction fetch (Instruction_Fetch[54:0])
+    .PC(PC_out)                       // Program counter output (PC)
+);
+
 
    //AND gate tthat takes in teh branch_en signal and the LSB of ALU_out where the ALU_out will be 1 is the branch operation from ALU op code is true
    //The branch_en comes from the control unit to check if it is actually a BRANCH operation along with checking if true from the ALU_out.
@@ -128,13 +131,14 @@ module Seventy_Two_Bit_Processor_Top;
   
 
 
-   Data_Memory datamemory(
-	.clk(clk),
-	.reset(rst),
-	.write_enable(write_en),
-	.register_destination(Instruction_Fetch[55:50]),
-	.ALU_Result(ALU_out)
-   );
+Data_Memory datamemory(
+    .clk(clk),
+    .reset(rst),                             // 'rst' is the signal name in your top module
+    .write_enable(write_en),                 // 'write_en' signal from your control logic
+    .register_destination_address(Instruction_Fetch[55:50]),  // Corrected to use 'register_destination_address'
+    .ALU_Result(ALU_out)                     // 'ALU_out' is the result from the ALU
+);
+
 
 
 
