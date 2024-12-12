@@ -7,7 +7,7 @@ module Seventy_Two_Bit_Processor_Top;
   //Global Wires
   wire clk, rst;
   //Wires from Control Unit
-  wire Branch_en, Jump_en, immediate_en, write_reg, write_datamem;
+  wire Branch_en, Jump_en, immediate_en, write_en, write_datamem;
   
   //Wires from Instruction Fetch
   wire [71:0] Instruction_Fetch;
@@ -15,10 +15,11 @@ module Seventy_Two_Bit_Processor_Top;
   //Wires from Program Counter
   wire [71:0] PC_out;
   wire And_Gate_result;
-  //Wires from Register
-
-  //Wires from ALU
-  wire[71:0] data_out1, data_out2; //wires for reading source registers data
+  
+  
+  
+  //Wires from Register and ALU
+  wire[71:0] data_out1, data_out2, ALU_out; //wires for reading source registers data
   //Wires from Multiplexer to choose between immediate and r type input b
   wire [71:0] immediate_mux_out, concatination_out;
 
@@ -26,26 +27,26 @@ module Seventy_Two_Bit_Processor_Top;
 /************************Program Counter Instantiate***********************************/
 /**************************************************************************************/
 
-  /*
-//CHECK AND TESTBENCH
+  
     ProgramCounter PC(
-      .clk(clk)
+      .clk(clk),
       .rst(reset),
+	  .Branch(AND_result), //AND_Result is the Branch_end ANDed with teh ALU output bit postion 0
+	  .jump(Jump_en),
       .PC_in(PC_out),
-      .jump_address(Instruction_Fetch),    //jump_address will grab respective immediate address [54:0] of instruction fetch 
-      .branch_address(Instruction_Fetch),  //branch_address will grab respective immediate address [67:0] of instruction fetch
-      .Jump_en(Jump_en)
+      .jump_address(Instruction_Fetch[54:0]),    //jump_address will grab respective immediate address for jump[54:0] of instruction fetch 
+      .branch_address(Instruction_Fetch[67:0])  //branch_address will grab respective immediate address for branch[67:0] of instruction fetch
     );
 
    //AND gate tthat takes in teh branch_en signal and the LSB of ALU_out where the ALU_out will be 1 is the branch operation from ALU op code is true
    //The branch_en comes from the control unit to check if it is actually a BRANCH operation along with checking if true from the ALU_out.
     
-    AND uut(AND_result, Branch_result, ALU_out[0]);
-  */
+    and (AND_result, Branch_en, ALU_out[0]);
 
-    /***************************************************************************/
+
+/****************************************************************************************/
 /************************Instruction Fetch Instantiate***********************************/
-/***************************************************************************/
+/****************************************************************************************/
 
   /*
 //CHECK AND TESTBENCH
@@ -65,20 +66,32 @@ module Seventy_Two_Bit_Processor_Top;
 
 /*
 
-//CHECK AND TESTBENCH
   Register register(
-    .write(write_reg),
     .clk(clk),
     .reset(rst),
     .reg1_address(Instruction_Fetch[67:62]),
     .reg2_address(Instruction_Fetch[61:56]),
-    .reg_r_address(Instruction_Fetch[55:50]),
     .data_out1(data_out1),
     .data_out2(data_out2)
   );
   */
+  
+  
+  /**************************************************************************************/
+ /************************Control Unit Instantiate***********************************************/
+/**************************************************************************************/
 
+/*
+  Control_Unit controlunit(
+	.clk(clk),
+	.opcode(Instruction_Fetch[71:68]),
+	.branch_en(Branch_en),
+	.jump_en(Jump_en),
+	.immediate_en(immediate_en),
+	.write_en(write_en)
+  );
 
+*/
   /**************************************************************************************/
  /************************ALU Instantiate***********************************************/
 /**************************************************************************************/
@@ -86,7 +99,7 @@ module Seventy_Two_Bit_Processor_Top;
   //Concatinate immediate number to 72 bits for the ALU
   Concatinator concat(
 	.A(Instruction_Fetch[49:0]),
-        .B(concatinator_out)
+    .B(concatinator_out)
 	);
 //CHECK AND TESTBENCH
   Multiplexer21(
@@ -99,9 +112,8 @@ module Seventy_Two_Bit_Processor_Top;
 
   /*
   ALU alu(
-    .write(write_reg),
     .clk(clk),
-    .op(Instruction_Fetch),
+    .op(Instruction_Fetch[71:68]),
     .A(data_out1),
     .B(data_out2),
     .C(ALU_out)
@@ -116,10 +128,11 @@ module Seventy_Two_Bit_Processor_Top;
 /*
 //CHECK AND TESTBENCH
    Data_Memory datamemory(
-	.reset(rst)
 	.clk(clk),
-	.register_destination(Instruction_Fetch[54:48),
-	.Write_in(ALU_out)
+	.reset(rst),
+	.write_enable(write_en),
+	.register_destination(Instruction_Fetch[55:50),
+	.ALU_Result(ALU_out)
    );
 */
 
