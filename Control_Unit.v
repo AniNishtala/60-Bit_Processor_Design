@@ -1,4 +1,4 @@
-module control_unit(
+module Control_Unit(
 input wire [3:0] opcode // input opcode 
 output reg branch_en,// Branch instruction 
 output reg  jump_en ,//enables jump
