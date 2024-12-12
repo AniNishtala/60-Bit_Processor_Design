@@ -1,22 +1,34 @@
-module ProgramCounter(
-	input clk,
-	input reset,
-	input [54:0] jump_address,
-	input [67:0] branch_address,
-	input [71:0] PC_in,
-	input Jump_en, Branch_en,
-	output reg [71:0] pc_out
+module PC(
+    input wire        clk,
+    input wire        rst,
+    input wire        Branch,  // If branch or not
+    input wire [71:0] Addr,    // Target address
+    output reg        ce,
+    output reg [71:0] PC
 );
 
-always @(posedge clk or posedge reset) begin
+/*
+ * This always block controls the signal ce.
+ */
+always @ (posedge clk or posedge rst) begin
+    if (rst)
+        ce <= 1'b0;
+    else
+        ce <= 1'b1;
+end
 
-	if(reset == 1)
-		pc <= 0;
-	else if(Jump_en == 1)
-		pc <= jump_address;
-	else if(Branch_en == 1)
-		pc <= branch_address
-	else
-		pc <= pc + 72; // increment by 72 to fetch the next instruction address
-	end
+/*
+ * This always block controls the signal PC.
+ */
+always @ (posedge clk or posedge rst) begin
+    if (rst)
+        PC <= 72'b0;            // Reset PC to 0
+    else if (!ce)
+        PC <= 72'b0;            // Maintain PC as 0 until ce is enabled
+    else if (Branch)
+        PC <= Addr;             // Update PC to branch address
+    else
+        PC <= Addr + 4'b1001;    // Increment PC by 9
+end
+
 endmodule
