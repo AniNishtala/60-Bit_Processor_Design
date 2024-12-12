@@ -27,8 +27,8 @@ module InstructionFetch_tb;
         // Test fetching multiple instructions
         for (i = 0; i < 10; i = i + 1) begin
             #10; // Wait for 10 time units
-            $display("%0t\t%h\t%h", $time, address, instruction);
-            address = address + 9; // Increment PC by 9 bytes (72 bits)
+            $display("%0t\t%b\t%b", $time, address, instruction);
+            address = address + 1; // Increment PC by 9 bytes (72 bits)
         end
 
         // End simulation
