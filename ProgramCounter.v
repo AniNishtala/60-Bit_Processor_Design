@@ -1,34 +1,24 @@
-module PC(
+module ProgramCounter(
     input wire        clk,
     input wire        rst,
-    input wire        Branch,  // If branch or not
+    input wire        Branch, jump,  // If branch or not, coming from outside AND gate of branch_en and ALU_Out[0]
     input wire [71:0] Addr,    // Target address
-    output reg        ce,
+    input wire [67:0] jump_addr, //jump address if jump operation
+    input wire [54:0] branch_addr, //branch address if branch operation
     output reg [71:0] PC
 );
 
 /*
- * This always block controls the signal ce.
- */
-always @ (posedge clk or posedge rst) begin
-    if (rst)
-        ce <= 1'b0;
-    else
-        ce <= 1'b1;
-end
-
-/*
  * This always block controls the signal PC.
  */
-always @ (posedge clk or posedge rst) begin
+always @ (posedge clk) begin
     if (rst)
         PC <= 72'b0;            // Reset PC to 0
-    else if (!ce)
-        PC <= 72'b0;            // Maintain PC as 0 until ce is enabled
     else if (Branch)
-        PC <= Addr;             // Update PC to branch address
-    else
-        PC <= Addr + 4'b1001;    // Increment PC by 9
+        PC <= {17'b0, branch_addr};             // Update PC to branch address
+    else if (jump)
+        PC <= {5'b0, jump_addr};  //If jump address, update PC to jump address
+    else 
+        PC <= Addr + 1'b1;    // Else increment to the next instruction, might need to pause this when simulating the final result!
 end
-
 endmodule
