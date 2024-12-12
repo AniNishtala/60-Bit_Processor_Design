@@ -1,7 +1,6 @@
 module Register(
-    input write, clk, reset,
-    input [9:0] reg1_address, reg2_address, reg_r_address,   // 10-bit address (to access 1024 registers)
-    input [71:0] result_in,
+    input clk, reset,
+    input [5:0] reg1_address, reg2_address,   // 10-bit address (to access 1024 registers)
     output reg [71:0] data_out1, data_out2
 );
 
@@ -17,21 +16,11 @@ module Register(
     end
 
     // Write or read from registers
-    always @(posedge clk or posedge reset) begin
-        if (reset) begin
-            // Optionally clear the registers on reset
-            
-            for (i = 0; i < d; i = i + 1) begin
-                datamemory[i] <= 72'b0;
-            end
-        end else if (write) begin
-            // Write the result_in value to the specified register
-            datamemory[reg_r_address] <= result_in;
-        end else begin
+    always @(posedge clk) begin
             // Read the data from the specified registers
             data_out1 <= datamemory[reg1_address];
             data_out2 <= datamemory[reg2_address];
-        end
+
     end
 
 endmodule
