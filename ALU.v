@@ -14,9 +14,9 @@ module ALU(
             3: C = A / B; // div
             4: C = A << B; // LSL by B
             5: C = A >> B; // LSR by B
-	        6: C = A && B; // and logical operation
-	        7: C = A || B; // or logical operation
-	        8: C = A ^ B; // xor operation
+	    6: C = A && B; // and logical operation
+            7: C = A || B; // or logical operation
+	    8: C = A ^ B; // xor operation
             9: C = A + B[54:0]; // addi
             10: C = A - B[54:0]; // subi
             11: C = A & B[54:0]; // andi
