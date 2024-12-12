@@ -35,7 +35,7 @@ module InstructionFetch_tb;
 
         // Test fetching multiple instructions
         for (i = 0; i < 10; i = i + 1) begin
-            #50; // Wait for 50 time units
+            #100; // Wait for 50 time units
             $display("%0t\t%b\t%b", $time, address, instruction);
             address = address + 1; // Increment PC by 9 bytes (72 bits)
         end
