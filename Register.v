@@ -1,6 +1,6 @@
 module Register(
     input write, clk, reset,
-    input [5:0] reg1_address, reg2_address, reg_r_address,   // 10-bit address (to access 1024 registers)
+    input [9:0] reg1_address, reg2_address, reg_r_address,   // 10-bit address (to access 1024 registers)
     input [71:0] result_in,
     output reg [71:0] data_out1, data_out2
 );
@@ -8,7 +8,6 @@ module Register(
     parameter n = 72;  // Data width (72 bits)
     parameter d = 1024;  // Number of registers (1024 registers)
     integer i;
-
     // Register memory array to hold 1024 registers, each 72 bits
     reg [n-1:0] datamemory [0:d-1];
 
