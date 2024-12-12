@@ -2,7 +2,7 @@ module Data_Memory(
     input wire clk,
     input wire reset,
     input wire write_enable,
-    input wire [54:48] register_destination_address,
+    input wire [55:50] register_destination_address,
     input wire [71:0] ALU_Result
 );
 
