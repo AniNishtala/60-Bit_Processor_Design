@@ -1,5 +1,5 @@
 # Define the memory size and content
-num_lines = 1024  # 0x3FF locations
+num_lines = 128  # 0x3FF locations
 file_name = "data_mem.txt"
 
 # Open the file for writing
