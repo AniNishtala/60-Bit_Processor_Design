@@ -1,4 +1,5 @@
 module Control_Unit(
+    input wire clk,
     input wire [3:0] opcode, // input opcode
     output reg branch_en,    // Branch instruction
     output reg jump_en,      // Enables jump
@@ -8,7 +9,7 @@ module Control_Unit(
 
 /*NEED TO FIND WAY TO INCLUDE THE JUMP OPERATION!!!*/
 
-always @(*) begin  // Use (*) for combinational logic
+always @(posedge clk) begin  // Use (*) for combinational logic
   
     // Decode the opcode and set control signals
     case (opcode)
@@ -16,7 +17,7 @@ always @(*) begin  // Use (*) for combinational logic
             branch_en <= 0;
             jump_en <= 0;
             immediate_en <= 0;
-	    write_en <= 0;
+	    write_en <= 1;
 	
         end
         
@@ -31,7 +32,7 @@ always @(*) begin  // Use (*) for combinational logic
             branch_en = 1;
             jump_en = 0;
             immediate_en = 0;
-	    write_en <=1;
+	    write_en <=0;
         end
         
         default: begin
