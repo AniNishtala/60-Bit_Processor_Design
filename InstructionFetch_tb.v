@@ -3,6 +3,7 @@
 module InstructionFetch_tb;
 
     // Inputs
+	reg clk, rst;
     reg [71:0] address;
 
     // Outputs
@@ -10,15 +11,23 @@ module InstructionFetch_tb;
 
     // Instantiate the Unit Under Test (UUT)
     InstructionFetch uut (
-        .address(address),
+        .clk(clk),
+		.reset(rst),
+		.address(address),
         .instruction(instruction)
     );
 
+    // Clock generation (toggle every 50 time units)
+    initial begin
+        clk = 0;
+		forever #50 clk = ~clk;  // Toggle clock every 50 time units (50ps)
+    end
+	
     // Testbench variables
     integer i;
 
     initial begin
-        // Display header
+		// Display header
         $display("Time\tAddress\t\tInstruction");
 
         // Initialize address to 0
@@ -26,13 +35,13 @@ module InstructionFetch_tb;
 
         // Test fetching multiple instructions
         for (i = 0; i < 10; i = i + 1) begin
-            #10; // Wait for 10 time units
+            #50; // Wait for 50 time units
             $display("%0t\t%b\t%b", $time, address, instruction);
             address = address + 1; // Increment PC by 9 bytes (72 bits)
         end
 
         // End simulation
-        #10;
+        #50;
         $stop;
     end
 endmodule
