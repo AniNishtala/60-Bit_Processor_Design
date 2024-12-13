@@ -10,6 +10,6 @@ module Multiplexer21(
 
 	always @(*) 
 	     begin
-	assign C = (selectionLine) ? B : A; 
+	     C = (selectionLine) ? B : A; 
 end
 endmodule
