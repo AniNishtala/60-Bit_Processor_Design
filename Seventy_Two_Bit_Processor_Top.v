@@ -9,7 +9,7 @@ input wire clk, rst
 /***************************************************************************/
 
   //Wires from Control Unit
-  wire Branch_en, Jump_en, immediate_en, write_en, write_datamem;
+  wire Branch_en, Jump_en, immediate_en, write_en;
   
   //Wires from Instruction Fetch
   wire [71:0] Instruction_Fetch;
