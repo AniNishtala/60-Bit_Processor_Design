@@ -7,20 +7,25 @@ module Control_Unit(
     output reg write_en      //write_en is for the Data Memory to write if R or I Type
 );
 
-/*NEED TO FIND WAY TO INCLUDE THE JUMP OPERATION!!!*/
 
-always @(posedge clk) begin  // Use (*) for combinational logic
+
+always @(posedge clk) begin 
   
     // Decode the opcode and set control signals
     case (opcode)
-        0, 1, 2, 3, 4, 5, 6, 7, 8: begin  // Opcodes 1-8 are R-Type instructions (decimal)
+        0, 1, 2, 3, 4, 6, 7, 8: begin  // Opcodes 1-8 are R-Type instructions (decimal)
             branch_en <= 0;
             jump_en <= 0;
             immediate_en <= 0;
 	    write_en <= 1;
 	
         end
-        
+        5: begin		//Jump operation to enable the jump signal to PC
+            branch_en <= 0;
+            jump_en <= 1;
+            immediate_en <= 0;
+	    write_en <= 0;
+	end
         9, 10, 11: begin  // Opcodes 9-11 are I-Type Instructions!
             branch_en <= 0;
             jump_en <= 0;
