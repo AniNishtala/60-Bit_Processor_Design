@@ -13,7 +13,7 @@ module ALU(
             2: C = A * B; // mul
             3: C = A / B; // div
             4: C = A << B; // LSL by B
-            5: C = A >> B; // LSR by B
+            5: C = 72'b1;  //Random output signal for jump operation, need an ALU_Op for the control unit for the jump
 	    6: C = A && B; // and logical operation
             7: C = A || B; // or logical operation
 	    8: C = A ^ B; // xor operation
